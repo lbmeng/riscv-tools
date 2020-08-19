@@ -8,6 +8,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Update and install things from apt now
 RUN apt-get update && apt-get install -y \
+	git \
 	autoconf \
 	automake \
 	autotools-dev \
