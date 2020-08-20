@@ -33,7 +33,7 @@ RUN apt-get update && apt-get install -y \
 RUN git clone --recursive https://github.com/riscv/riscv-gnu-toolchain /tmp/riscv-gnu-toolchain && \
 	cd /tmp/riscv-gnu-toolchain && \
 	./configure --prefix=/opt/riscv --enable-multilib && \
-	make linux && \
+	make -j$(nproc) linux && \
 	rm -rf /tmp/riscv-gnu-toolchain
 
 # Create our user/group
