@@ -11,6 +11,7 @@ variables:
 
 jobs:
 - job:
+  timeoutInMinutes: 0
   steps:
   - script: |
       docker build -f Dockerfile -t $(image) .
