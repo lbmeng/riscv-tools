@@ -1,0 +1,5 @@
+# ignore .git folder
+.git
+
+# ignore Azure pipelines
+azure-pipelines.yml
