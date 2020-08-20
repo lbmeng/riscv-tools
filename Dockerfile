@@ -30,8 +30,12 @@ RUN apt-get update && apt-get install -y \
 	&& rm -rf /var/lib/apt/lists/*
 
 # Build RISC-V toolchains
-RUN git clone --recursive https://github.com/riscv/riscv-gnu-toolchain /tmp/riscv-gnu-toolchain && \
+RUN git clone https://github.com/riscv/riscv-gnu-toolchain /tmp/riscv-gnu-toolchain && \
 	cd /tmp/riscv-gnu-toolchain && \
+	git submodule update --init riscv-binutils && \
+	git submodule update --init riscv-gcc && \
+	git submodule update --init riscv-gdb && \
+	git submodule update --init riscv-glibc && \
 	./configure --prefix=/opt/riscv --enable-multilib && \
 	make -j$(nproc) linux && \
 	rm -rf /tmp/riscv-gnu-toolchain
