@@ -28,6 +28,10 @@ RUN apt-get update && apt-get install -y \
 	bc \
 	zlib1g-dev \
 	libexpat-dev \
+	pkg-config \
+	libglib2.0-dev \
+	libfdt-dev \
+	libpixman-1-dev \
 	&& rm -rf /var/lib/apt/lists/*
 
 # Build RISC-V toolchains
@@ -41,10 +45,18 @@ RUN git clone https://github.com/riscv/riscv-gnu-toolchain /tmp/riscv-gnu-toolch
 	make -j$(nproc) linux && \
 	rm -rf /tmp/riscv-gnu-toolchain
 
+# Build QEMU RISC-V
+RUN git clone git://git.qemu.org/qemu.git /tmp/qemu && \
+	cd /tmp/qemu && \
+	git checkout v5.1.0 && \
+	./configure --prefix=/opt/qemu --target-list="riscv32-linux-user,riscv32-softmmu,riscv64-linux-user,riscv64-softmmu" && \
+	make -j$(nproc) all install && \
+	rm -rf /tmp/qemu
+
 # Create our user/group
 RUN echo riscv ALL=NOPASSWD: ALL > /etc/sudoers.d/riscv
 RUN useradd -m -U riscv
 USER riscv:riscv
 
 # Append the toolchain path
-ENV PATH $PATH:/opt/riscv/bin
+ENV PATH $PATH:/opt/riscv/bin:/opt/qemu/bin
