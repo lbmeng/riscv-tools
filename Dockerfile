@@ -26,7 +26,8 @@ RUN apt-get update && apt-get install -y \
 	patchutils \
 	bc \
 	zlib1g-dev \
-	libexpat-dev
+	libexpat-dev \
+	&& rm -rf /var/lib/apt/lists/*
 
 # Build RISC-V toolchains
 RUN git clone --recursive https://github.com/riscv/riscv-gnu-toolchain /tmp/riscv-gnu-toolchain && \
